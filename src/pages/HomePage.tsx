@@ -282,6 +282,7 @@ const HomePage = () => {
           </div>
         </div>
       </header>
+
       <main className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 my-4">
         {products.map((product) => (
           <ProductCard
@@ -293,13 +294,11 @@ const HomePage = () => {
         ))}
       </main>
 
-      <footer className="bg-gray-800 text-white p-4  flex flex-col text-center  rounded">
+      <footer className="bg-gray-800 text-white p-4 w-full flex flex-col text-center  rounded">
         <form
           onSubmit={handleSubmit}
-          className="bg-white p-4 rounded w-full justify-center shadow-md text-black"
+          className="bg-white p-4 rounded  justify-center shadow-md text-black"
         >
-          <h2 className="text-lg font-bold mb-4">ثبت سفارش</h2>
-
           <div className="mb-4 text-black">
             <label
               htmlFor="fullName"
@@ -353,7 +352,26 @@ const HomePage = () => {
               // rows="3"
             ></textarea>
           </div>
-
+          <div className="bg-white p-4 rounded shadow-md text-right mb-4">
+            <h2 className="text-lg font-bold mb-4">موارد سبد خرید:</h2>
+            {cart.length > 0 ? (
+              <ul>
+                {cart.map((item) => (
+                  <li key={item.id} className="mb-2 text-white-600">
+                    <div className="bg-gradient-to-r from-gray-600 to-red-400 rounded-xl w-full p-4">
+                      <div className="font-medium text-white">{item.name}</div>
+                      <div className="text-white"> {item.quantity} عدد</div>
+                      <div className="text-black font-semibold">
+                        {item.price.toLocaleString()} تومان
+                      </div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-gray-600">سبد خرید خالی است!</p>
+            )}
+          </div>
           <button
             type="submit"
             className="w-full bg-orange-500 text-white py-2 px-4 rounded hover:bg-orange-600"
