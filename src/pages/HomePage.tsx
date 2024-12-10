@@ -277,9 +277,9 @@ const HomePage = () => {
             onRemove={() => handleRemove(product)}
           />
         ))}
-      </main>
-      <footer className="bg-gray-800 text-white p-4 w-1/2 flex flex-col text-center  rounded">
-        <p className="mb-4">جمع کل: {total.toLocaleString()} تومان</p>
+        <p className=" bg-gradient-to-r from-orange-500 via-red-500 to-orange-500 text-black mx-5 px-4 pt-6 w-auto h-16 font-sans font-semibold p-0 rounded">
+          جمع کل: {total.toLocaleString()} تومان
+        </p>
         <form
           onSubmit={handleSubmit}
           className="bg-white p-4 rounded w-full justify-center shadow-md text-black"
@@ -347,6 +347,9 @@ const HomePage = () => {
             ثبت سفارش
           </button>
         </form>
+      </main>
+      <footer className="bg-gray-800 text-white p-4 w-1/2 flex flex-col text-center  rounded">
+        <p>&copy; {new Date().getFullYear()} تمامی حقوق محفوظ است</p>
       </footer>
       <ToastContainer />
     </div>
