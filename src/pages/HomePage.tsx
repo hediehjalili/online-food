@@ -195,17 +195,31 @@ const HomePage = () => {
   React.useEffect(() => {
     saveCartToLocalStorage();
   }, [cart]);
-
+  //تا سر اینجا
   const handleAdd = (product) => {
-    setTotal(total + product.price);
-    setCart((prevCart) => [...prevCart, product]);
+    const updatedCart = [...cart];
+    const existingItem = updatedCart.find((item) => item.id === product.id);
+
+    if (existingItem) {
+      existingItem.quantity += 1; // افزایش تعداد محصول
+    } else {
+      updatedCart.push({ ...product, quantity: 1 }); // اضافه کردن محصول جدید
+    }
+
+    setCart(updatedCart);
+    setTotal((prevTotal) => prevTotal + product.price);
     toast.success("محصول به سبد خرید اضافه شد!");
   };
 
-  // حذف محصول از سبد خرید
   const handleRemove = (product) => {
-    setTotal(total - product.price);
-    setCart((prevCart) => prevCart.filter((item) => item.id !== product.id));
+    const updatedCart = cart
+      .map((item) =>
+        item.id === product.id ? { ...item, quantity: item.quantity - 1 } : item
+      )
+      .filter((item) => item.quantity > 0); // حذف آیتم‌های صفر
+
+    setCart(updatedCart);
+    setTotal((prevTotal) => prevTotal - product.price);
     toast.error("محصول از سبد خرید حذف شد!");
   };
 
@@ -233,7 +247,7 @@ const HomePage = () => {
     // چک کردن فرمت شماره تلفن
     const phoneRegex = /^[0-9]{11}$/;
     if (!phoneRegex.test(phone)) {
-      toast.error("شماره تلفن باید ۱۱ رقم عددی باشد!");
+      toast.error("شماره تلفن باید ۱۱ رقم باشد!");
       return false;
     }
 
@@ -277,9 +291,9 @@ const HomePage = () => {
             onRemove={() => handleRemove(product)}
           />
         ))}
-        <p className=" bg-gradient-to-r from-orange-500 via-red-500 to-orange-500 text-black mx-5 px-4 pt-6 w-auto h-16 font-sans font-semibold p-0 rounded">
-          جمع کل: {total.toLocaleString()} تومان
-        </p>
+      </main>
+
+      <footer className="bg-gray-800 text-white p-4  flex flex-col text-center  rounded">
         <form
           onSubmit={handleSubmit}
           className="bg-white p-4 rounded w-full justify-center shadow-md text-black"
@@ -346,9 +360,11 @@ const HomePage = () => {
           >
             ثبت سفارش
           </button>
+          <p className=" bg-gradient-to-r from-orange-500 via-red-500 to-orange-500 text-white p-2 m-2 font-sans font-semibold text-center rounded">
+            جمع کل: {total.toLocaleString()} تومان
+          </p>
         </form>
-      </main>
-      <footer className="bg-gray-800 text-white p-4 w-1/2 flex flex-col text-center  rounded">
+
         <p>&copy; {new Date().getFullYear()} تمامی حقوق محفوظ است</p>
       </footer>
       <ToastContainer />
